@@ -34,13 +34,11 @@ ActiveRecord::Schema.define(version: 2022_01_22_205747) do
   end
 
   create_table "user_car_recomendations", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "car_id", null: false
+    t.integer "user_id"
+    t.integer "car_id"
     t.decimal "rank_score", precision: 5, scale: 4
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["car_id"], name: "index_user_car_recomendations_on_car_id"
-    t.index ["user_id"], name: "index_user_car_recomendations_on_user_id"
   end
 
   create_table "user_preferred_brands", force: :cascade do |t|
@@ -61,8 +59,6 @@ ActiveRecord::Schema.define(version: 2022_01_22_205747) do
   end
 
   add_foreign_key "cars", "brands"
-  add_foreign_key "user_car_recomendations", "cars"
-  add_foreign_key "user_car_recomendations", "users"
   add_foreign_key "user_preferred_brands", "brands"
   add_foreign_key "user_preferred_brands", "users"
 end

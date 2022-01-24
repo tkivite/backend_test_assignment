@@ -24,6 +24,5 @@ end
 User.create!(
   email: "example@mail.com",
   preferred_price_range: 35_000...40_000,
-  preferred_brands: [BRANDS["Alfa Romeo"], BRANDS["Volkswagen"]],
-  recommendations: [CARS["Amarok"], CARS["Derby"], CARS["Brera"]],
+  preferred_brands: [BRANDS["Alfa Romeo"], BRANDS["Volkswagen"]]
 )
