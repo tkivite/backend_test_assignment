@@ -1,7 +1,8 @@
 class CreateBrands < ActiveRecord::Migration[6.1]
   def change
+    enable_extension "citext"
     create_table :brands do |t|
-      t.string :name
+      t.citext :name, index: { unique: true }
 
       t.timestamps
     end
