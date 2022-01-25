@@ -25,9 +25,9 @@ Clone the app from github
 
 ## Sample Request
 
-Endpoint: {base_url}/usercarseleciton/:userid
-Request Method: GET
-Optional Query String: ?page=1&query=vol&price_min=20000&price_max=80000
+- Endpoint: {base_url}/usercarseleciton/:userid
+- Request Method: GET
+- Optional Query String: ?page=1&query=vol&price_min=20000&price_max=80000
 
 
 
