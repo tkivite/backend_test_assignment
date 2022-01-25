@@ -1,11 +1,9 @@
 namespace :ai_recommendation_service do
   desc "Fetch records from ai recommendation service"
   task fetch_records: :environment do
-    base_url = "https://bravado-images-production.s3.amazonaws.com/recomended_cars.json?user_id=1"
-    #   api_response = RestClient.get(url, headers={})
+    base_url = ENV["EXTERNAL_RECOMENDATION_SERVICE"]
+
     begin
-      p "Exec tasks"
-      # p User.all
       User.all.each do |user|
         Rails.logger.info "Calling endpoint: #{base_url}?user_id = #{user.id}"
         api_response = RestClient::Request.execute(method: :get, url: base_url + "?user_id = #{user.id}",
@@ -16,9 +14,9 @@ namespace :ai_recommendation_service do
           data = JSON.parse body
 
           data.each_with_index do |rec|
-            Rails.logger.info 'Found a record '
-            Rails.logger.info '----------------------------------------------------------------'
-            Rails.logger.info "updateing database record for user: #{user.id} and car: #{rec['car_id']}"
+            Rails.logger.info "Found a record "
+            Rails.logger.info "----------------------------------------------------------------"
+            Rails.logger.info "updating database record for user: #{user.id} and car: #{rec["car_id"]}"
             recomendation = UserCarRecomendation.where(user_id: user.id, car_id: rec["car_id"]).first_or_initialize
             recomendation.rank_score = rec["rank_score"]
             recomendation.save!

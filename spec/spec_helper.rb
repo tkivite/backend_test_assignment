@@ -44,8 +44,8 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-# The settings below are suggested to provide a good initial experience
-# with RSpec, but feel free to customize to your heart's content.
+  # The settings below are suggested to provide a good initial experience
+  # with RSpec, but feel free to customize to your heart's content.
 =begin
   # This allows you to limit a spec run to individual examples or groups
   # you care about by tagging them with `:focus` metadata. When nothing
@@ -93,4 +93,29 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  RSpec.configure do |config|
+    config.before :all, type: :request do
+      BRANDS_DATA = JSON.parse(File.read("spec/requests/fixtures/brands.json"))
+      CARS_DATA = JSON.parse(File.read("spec/requests/fixtures/cars.json"))
+
+      BRANDS = BRANDS_DATA.each.with_object({}) do |brand_item, memo|
+        brand_name = brand_item["name"]
+        memo[brand_name] = Brand.create!(name: brand_name)
+      end
+
+      CARS = CARS_DATA.each.with_object({}) do |car, memo|
+        model = car["model"]
+        brand = BRANDS[car["brand_name"]]
+        price = car["price"]
+        memo[model] = Car.create!(model: model, brand: brand, price: price)
+      end
+
+      @user = User.create!(
+        email: "example@mail.com",
+        preferred_price_range: 35_000...40_000,
+        preferred_brands: [BRANDS["Alfa Romeo"], BRANDS["Volkswagen"]],
+      )
+    end
+  end
 end

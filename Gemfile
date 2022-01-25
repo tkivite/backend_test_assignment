@@ -37,6 +37,7 @@ group :test do
   gem "factory_girl_rails"
   gem "rails-controller-testing"
   gem "database_cleaner"
+  # gem 'capybara'
 end
 group :development do
   gem "listen", "~> 3.3"
