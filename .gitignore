@@ -28,4 +28,5 @@
 /config/database.yml
 # Ignore database config.
 config/database.yml
+.rspec
 
