@@ -7,9 +7,11 @@
 set :environment, "development"
 set :output, {:error => "log/cron_error_log.log", :standard => "log/cron_log.log"}
 every 2.minutes, :roles => [:app] do
-  # sidekiq "CronTask"
-  p "Every ten seconds"
+  Rails.logger.info 'Executing scheduled rake task to fetch ai recommendations every 30 minutes'
+  Rails.logger.info '----------------------------------------------------------------'
   rake "ai_recommendation_service:fetch_records"
+  Rails.logger.info '----------------------------------------------------------------'
+  Rails.logger.info 'Rake task completed'
 end
 
 # Example:

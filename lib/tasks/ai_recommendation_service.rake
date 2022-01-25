@@ -7,6 +7,7 @@ namespace :ai_recommendation_service do
       p "Exec tasks"
       # p User.all
       User.all.each do |user|
+        Rails.logger.info "Calling endpoint: #{base_url}?user_id = #{user.id}"
         api_response = RestClient::Request.execute(method: :get, url: base_url + "?user_id = #{user.id}",
                                                    timeout: 30)
 
@@ -15,14 +16,16 @@ namespace :ai_recommendation_service do
           data = JSON.parse body
 
           data.each_with_index do |rec|
-            p rec["car_id"]
-            rec["rank_score"]
+            Rails.logger.info 'Found a record '
+            Rails.logger.info '----------------------------------------------------------------'
+            Rails.logger.info "updateing database record for user: #{user.id} and car: #{rec['car_id']}"
             recomendation = UserCarRecomendation.where(user_id: user.id, car_id: rec["car_id"]).first_or_initialize
             recomendation.rank_score = rec["rank_score"]
             recomendation.save!
           end
         end
       rescue => e
+        Rails.logger.error "Api error"
         p e.inspect
       end
     end

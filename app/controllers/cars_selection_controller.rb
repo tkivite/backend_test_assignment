@@ -7,11 +7,15 @@ class CarsSelectionController < ApplicationController
     @user = User.find_by(id: params["userid"])
     @cars = Car.where(nil)
     if (params["query"].present? || params["price_min"].present? || params["price_max"].present?)
+      Rails.logger.info 'Fetching cars with filters'
+      Rails.logger.info '-------------------------------------------------------------------'
       @cars = @cars.filter_with_brand(params["query"]) if params["query"].present?
       @cars = @cars.filter_with_price_min(params["price_min"]) if params["price_min"].present? && valid_price?(params["price_min"])
       @cars = @cars.filter_with_price_max(params["price_max"]) if params["price_max"].present? && valid_price?(params["price_max"])
       @pagy, @records = pagy(@cars, page: params["page"])
     else
+      Rails.logger.info 'Fetching cars based on user preferences'
+      Rails.logger.info '-------------------------------------------------------------------'
       @cars = Car.weighted_search(@user) + Car.user_ai_recommendations(@user) + Car.user_unranked_cars(@user)
       @pagy_a, @records = pagy_array(@cars, page: params["page"])
     end
