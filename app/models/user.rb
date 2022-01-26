@@ -5,4 +5,13 @@ class User < ApplicationRecord
 
   #validations
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: :create }
+
+  def user_car_label(car)
+    return "perfect_match" if self.preferred_brands.include?(car.brand) && (self.preferred_price_range.include?(car.price))
+    return "good_match" if (self.preferred_brands.include?(car.brand))
+  end
+
+  def user_car_rank(car)
+    self.user_car_recomendations.where(car_id: car.id).first.try(:rank_score)
+  end
 end

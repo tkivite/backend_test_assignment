@@ -1,5 +1,5 @@
 class UserCarMatchQuery
-  def initialize(relation = Car.all,user)
+  def initialize(relation = Car.all, user)
     @relation = relation
     @user = user
   end
@@ -20,7 +20,8 @@ class UserCarMatchQuery
     @relation.where(:price => @user.preferred_price_range)
   end
 
-  def user_recomendation(size)
+  def user_recomendation
+    size = ENV["CAR_RECOMENDATION_FETCH_SIZE"].to_i || 5
     @relation.where(:id => @user.user_car_recomendations.order(rank_score: :desc).limit(size).map(&:car_id))
   end
 

@@ -7,5 +7,4 @@ class Car < ApplicationRecord
 
   #validations
   validates :model, presence: true, uniqueness: { scope: [:brand_id], case_sensitive: false }
-  
 end
