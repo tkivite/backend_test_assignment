@@ -26,6 +26,11 @@ class UserCarMatchQuery
   end
 
   def no_match
-    @relation.where.not(:brand => @user.preferred_brands).where.not(:price => @user.preferred_price_range)
+    @relation.where.not(:brand => @user.preferred_brands).where.not(:price => @user.preferred_price_range).order(price: :desc)
   end
+
+  #  def order_by_field(field,direction)
+  #   @relation.order("#{field} #{direction}")
+  #  end
+
 end
